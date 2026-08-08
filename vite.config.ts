@@ -5,6 +5,9 @@ import path from 'node:path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // GitHub Pages serves this as a project site under /react-academy/; every other
+  // target (dev, Vercel) stays at the root.
+  base: process.env.GITHUB_PAGES === 'true' ? '/react-academy/' : '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {

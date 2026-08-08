@@ -34,6 +34,10 @@ function Deferred({ children }: { children: ReactNode }) {
   )
 }
 
+// Vite bakes in the deploy base path, so the router follows it instead of
+// assuming the app is mounted at the domain root.
+const basename = import.meta.env.BASE_URL.replace(/\/$/, '') || '/'
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -79,7 +83,7 @@ const router = createBrowserRouter([
       { path: '*', element: <NotFoundPage /> },
     ],
   },
-])
+], { basename })
 
 export default function App() {
   return <RouterProvider router={router} />
