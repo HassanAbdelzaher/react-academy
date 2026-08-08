@@ -56,6 +56,14 @@ export function loadPhaseLessons(phaseSlug: string): Promise<void> {
   return promise
 }
 
+/**
+ * Pull in every phase. Only worth calling for something that genuinely needs the
+ * whole course at once — full-text search is the one such caller.
+ */
+export function loadAllLessons(): Promise<void> {
+  return Promise.all(Object.keys(LOADERS).map(loadPhaseLessons)).then(() => undefined)
+}
+
 /** Synchronous read — only returns something once the phase has been loaded. */
 export function getLessonBody(id: string): LessonBody | undefined {
   return cache.get(id)

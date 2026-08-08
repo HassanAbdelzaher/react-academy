@@ -39,7 +39,7 @@ export function VisualFrame({
   children,
   accent = 'var(--color-brand-400)',
 }: Props) {
-  const { L } = useI18n()
+  const { t, L } = useI18n()
   const current = steps[step]
 
   return (
@@ -82,7 +82,7 @@ export function VisualFrame({
           <button
             type="button"
             onClick={onPrev}
-            aria-label="previous step"
+            aria-label={t('visualPrevStep')}
             className="grid h-8 w-8 place-items-center rounded-full border border-line text-content-muted transition-colors hover:text-content"
           >
             <IconChevron className="rotate-180 flip-rtl" width={14} height={14} />
@@ -99,7 +99,7 @@ export function VisualFrame({
           <button
             type="button"
             onClick={onNext}
-            aria-label="next step"
+            aria-label={t('visualNextStep')}
             className="grid h-8 w-8 place-items-center rounded-full border border-line text-content-muted transition-colors hover:text-content"
           >
             <IconChevron className="flip-rtl" width={14} height={14} />
@@ -112,6 +112,7 @@ export function VisualFrame({
                 type="button"
                 onClick={() => onStep(i)}
                 aria-label={L(s.label)}
+                aria-current={i === step}
                 className={cn(
                   'h-1.5 rounded-full transition-all',
                   i === step ? 'w-6' : 'w-1.5 bg-line-strong hover:bg-content-faint',

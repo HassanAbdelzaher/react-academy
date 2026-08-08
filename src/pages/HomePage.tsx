@@ -14,6 +14,7 @@ import {
   IconTarget,
 } from '@/components/ui/icons'
 import { useI18n } from '@/i18n/context'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { PHASES, TOTAL_LESSONS, TOTAL_MINUTES } from '@/content/phases'
 import { LEVEL_ORDER, type Level } from '@/content/types'
 import { usePhaseStats, useOverallProgress } from '@/hooks/useCourseProgress'
@@ -128,6 +129,9 @@ export function HomePage() {
   const { t, L, lang } = useI18n()
   const stats = usePhaseStats()
   const overall = useOverallProgress()
+
+  // Bare site name — the home page is what the default description describes.
+  useDocumentTitle('')
 
   const resumeHref = overall.next
     ? `/phase/${overall.next.phaseSlug}/${overall.next.lessonSlug}`

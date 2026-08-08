@@ -4,6 +4,7 @@ import { Playground } from '@/components/playground/Playground'
 import { Reveal } from '@/components/ui/Reveal'
 import { IconChevron, IconSparkles } from '@/components/ui/icons'
 import { useI18n } from '@/i18n/context'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { PLAYGROUND_EXAMPLES } from '@/content/playgroundExamples'
 import { getPhase } from '@/content/phases'
 import { cn } from '@/lib/cn'
@@ -13,6 +14,8 @@ export function PlaygroundPage() {
   const [activeId, setActiveId] = useState(PLAYGROUND_EXAMPLES[0].id)
   const active = PLAYGROUND_EXAMPLES.find((e) => e.id === activeId) ?? PLAYGROUND_EXAMPLES[0]
   const phase = active.phase ? getPhase(active.phase) : undefined
+
+  useDocumentTitle(t('navPlayground'))
 
   return (
     <div className="relative">

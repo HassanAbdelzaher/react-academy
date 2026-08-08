@@ -16,6 +16,7 @@ const NAV = [
   { to: '/roadmap', key: 'navRoadmap' },
   { to: '/playground', key: 'navPlayground' },
   { to: '/visuals', key: 'navVisuals' },
+  { to: '/exam', key: 'navExam' },
   { to: '/progress', key: 'navDashboard' },
 ] as const
 

@@ -1,9 +1,11 @@
 import { ButtonLink } from '@/components/ui/Button'
 import { AtomLogo } from '@/components/brand/AtomLogo'
 import { useI18n } from '@/i18n/context'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 
 export function NotFoundPage() {
   const { t } = useI18n()
+  useDocumentTitle(t('notFoundTitle'))
   return (
     <div className="relative grid min-h-[60vh] place-items-center px-4 text-center">
       <div className="aurora opacity-50" />

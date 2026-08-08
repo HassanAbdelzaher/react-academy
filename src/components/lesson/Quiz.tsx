@@ -7,7 +7,7 @@ import { cn } from '@/lib/cn'
 import type { QuizBlock } from '@/content/blocks'
 
 export function Quiz({ block }: { block: QuizBlock }) {
-  const { L } = useI18n()
+  const { t, L } = useI18n()
   const [picked, setPicked] = useState<number | null>(null)
   const answered = picked !== null
   const correct = answered && block.options[picked]?.correct === true
@@ -32,8 +32,12 @@ export function Quiz({ block }: { block: QuizBlock }) {
             <li key={i}>
               <button
                 type="button"
-                disabled={answered}
-                onClick={() => setPicked(i)}
+                // `aria-disabled` rather than `disabled`: a disabled button is
+                // dropped from the tab order, so answering with the keyboard
+                // would throw focus back to the top of the document and make the
+                // options unreadable afterwards.
+                aria-disabled={answered}
+                onClick={() => !answered && setPicked(i)}
                 className={cn(
                   'flex w-full items-start gap-3 rounded-xl border px-4 py-3 text-start text-sm transition-all',
                   !answered && 'border-line bg-surface hover:border-brand-400 hover:-translate-y-0.5',
@@ -75,11 +79,13 @@ export function Quiz({ block }: { block: QuizBlock }) {
             exit={{ opacity: 0, height: 0 }}
             className="overflow-hidden"
           >
-            <div className="mt-3.5 rounded-xl border border-line bg-surface p-4 text-sm">
+            {/* The verdict appears without focus moving, so it has to announce itself. */}
+            <div
+              className="mt-3.5 rounded-xl border border-line bg-surface p-4 text-sm"
+              role="status"
+            >
               <p className={cn('font-bold', correct ? 'text-[var(--color-level-beginner)]' : 'text-[#fb7185]')}>
-                {correct
-                  ? L({ en: 'Correct.', ar: 'إجابة صحيحة.' })
-                  : L({ en: 'Not quite.', ar: 'ليست صحيحة تمامًا.' })}
+                {correct ? t('quizCorrect') : t('quizWrong')}
               </p>
               <p className="mt-1 text-content-muted">
                 <RichText>{L(block.explain)}</RichText>

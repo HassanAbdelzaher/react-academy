@@ -3,10 +3,13 @@ import { Reveal } from '@/components/ui/Reveal'
 import { VISUALS } from '@/components/visuals'
 import { IconChevron, IconLayers } from '@/components/ui/icons'
 import { useI18n } from '@/i18n/context'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { getPhase } from '@/content/phases'
 
 export function VisualsPage() {
   const { t, L } = useI18n()
+
+  useDocumentTitle(t('navVisuals'))
 
   return (
     <div className="relative">

@@ -12,6 +12,7 @@ import { IconCheck, IconChevron, IconClock, IconExternal } from '@/components/ui
 import { useI18n } from '@/i18n/context'
 import { progressStore, useProgress } from '@/lib/progress'
 import { NotFoundPage } from './NotFoundPage'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { cn } from '@/lib/cn'
 
 export function LessonPage() {
@@ -40,6 +41,11 @@ export function LessonPage() {
       alive = false
     }
   }, [phaseSlug])
+
+  useDocumentTitle(
+    entry ? `${L(entry.lesson.title)} · ${L(entry.phase.title)}` : t('notFoundTitle'),
+    entry ? L(entry.lesson.summary) : undefined,
+  )
 
   if (!entry) return <NotFoundPage />
 

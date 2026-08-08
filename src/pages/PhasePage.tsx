@@ -19,6 +19,7 @@ import { useI18n } from '@/i18n/context'
 import { usePhaseStat } from '@/hooks/useCourseProgress'
 import { progressStore, useProgress } from '@/lib/progress'
 import { NotFoundPage } from './NotFoundPage'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { cn } from '@/lib/cn'
 
 export function PhasePage() {
@@ -32,6 +33,11 @@ export function PhasePage() {
   useEffect(() => {
     if (phaseSlug) void loadPhaseLessons(phaseSlug)
   }, [phaseSlug])
+
+  useDocumentTitle(
+    phase ? `${t('phase')} ${phase.id} · ${L(phase.title)}` : t('notFoundTitle'),
+    phase ? L(phase.tagline) : undefined,
+  )
 
   if (!phase) return <NotFoundPage />
 

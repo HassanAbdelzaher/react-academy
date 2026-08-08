@@ -155,26 +155,50 @@ function BlockView({ block }: { block: Block }) {
 
     case 'table': {
       const head = LL(block.head)
+      // Comparison tables start with a blank corner cell, which makes the first
+      // column a stack of row labels rather than data. An empty `<th>` reads as
+      // an unlabelled column header, so the corner becomes a plain cell and the
+      // labels below it become row headers.
+      const rowLabelled = head[0] === ''
+
       return (
         <div className="my-6 overflow-x-auto rounded-2xl border border-line">
           <table className="w-full border-collapse text-sm">
             <thead>
               <tr className="bg-surface-2">
-                {head.map((h, i) => (
-                  <th key={i} className="px-4 py-2.5 text-start font-bold whitespace-nowrap">
-                    {h}
-                  </th>
-                ))}
+                {head.map((h, i) =>
+                  i === 0 && rowLabelled ? (
+                    <td key={i} className="px-4 py-2.5" />
+                  ) : (
+                    <th
+                      key={i}
+                      scope="col"
+                      className="px-4 py-2.5 text-start font-bold whitespace-nowrap"
+                    >
+                      {h}
+                    </th>
+                  ),
+                )}
               </tr>
             </thead>
             <tbody>
               {block.rows.map((row, i) => (
                 <tr key={i} className="border-t border-line">
-                  {LL(row).map((cell, k) => (
-                    <td key={k} className="px-4 py-2.5 align-top text-content-muted">
-                      <RichText>{cell}</RichText>
-                    </td>
-                  ))}
+                  {LL(row).map((cell, k) =>
+                    k === 0 && rowLabelled ? (
+                      <th
+                        key={k}
+                        scope="row"
+                        className="px-4 py-2.5 text-start align-top font-semibold"
+                      >
+                        <RichText>{cell}</RichText>
+                      </th>
+                    ) : (
+                      <td key={k} className="px-4 py-2.5 align-top text-content-muted">
+                        <RichText>{cell}</RichText>
+                      </td>
+                    ),
+                  )}
                 </tr>
               ))}
             </tbody>

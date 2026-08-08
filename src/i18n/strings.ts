@@ -129,6 +129,53 @@ export const UI = {
   phaseFinished: { en: 'Phase finished — well done.', ar: 'انتهت المرحلة — أحسنت.' },
   courseFinished: { en: 'That was the last lesson. Congratulations.', ar: 'كان ذلك آخر درس. تهانينا.' },
 
+  // --- exams ---------------------------------------------------------
+  navExam: { en: 'Exams', ar: 'الاختبارات' },
+  examTitle: { en: 'Level exams', ar: 'اختبارات المستويات' },
+  examIntro: {
+    en: 'Ten questions drawn at random from a bank, marked as soon as you finish. Sit a level again and you get a different paper.',
+    ar: 'عشرة أسئلة تُسحب عشوائيًا من بنك أسئلة، وتُصحَّح فور انتهائك. أعِد الاختبار لتحصل على ورقة مختلفة.',
+  },
+  examStart: { en: 'Start exam', ar: 'ابدأ الاختبار' },
+  examRetake: { en: 'Sit it again', ar: 'أعِد الاختبار' },
+  examBackToList: { en: 'All exams', ar: 'كل الاختبارات' },
+  examQuestionCounter: { en: 'Question', ar: 'سؤال' },
+  examOf: { en: 'of', ar: 'من' },
+  examNext: { en: 'Next question', ar: 'السؤال التالي' },
+  examPrev: { en: 'Previous', ar: 'السابق' },
+  examFinish: { en: 'Finish and mark', ar: 'إنهاء وتصحيح' },
+  examAnswered: { en: 'answered', ar: 'مُجاب' },
+  examUnansweredWarning: {
+    en: 'Unanswered questions are marked wrong.',
+    ar: 'الأسئلة غير المُجابة تُحتسب خاطئة.',
+  },
+  examResultTitle: { en: 'Your result', ar: 'نتيجتك' },
+  examPassed: { en: 'Passed', ar: 'ناجح' },
+  examFailed: { en: 'Not passed yet', ar: 'لم تنجح بعد' },
+  examPassMark: { en: 'Pass mark', ar: 'درجة النجاح' },
+  examByPhase: { en: 'How each phase went', ar: 'أداؤك في كل مرحلة' },
+  examReview: { en: 'Review every question', ar: 'راجع كل سؤال' },
+  examYourAnswer: { en: 'Your answer', ar: 'إجابتك' },
+  examCorrectAnswer: { en: 'Correct answer', ar: 'الإجابة الصحيحة' },
+  examSkipped: { en: 'Left blank', ar: 'تُرك فارغًا' },
+  examBest: { en: 'Best', ar: 'الأفضل' },
+  examAttempts: { en: 'Attempts', ar: 'المحاولات' },
+  examBankSize: { en: 'questions in the bank', ar: 'سؤالًا في بنك الأسئلة' },
+  examNotReady: { en: 'Bank in preparation', ar: 'بنك الأسئلة قيد الإعداد' },
+  examNotReadyBody: {
+    en: 'This level\'s questions are still being written. The beginner exam is ready now.',
+    ar: 'ما زالت أسئلة هذا المستوى قيد الكتابة. اختبار المبتدئين جاهز الآن.',
+  },
+  examCovers: { en: 'Covers', ar: 'يغطّي' },
+  examLoading: { en: 'Drawing your questions…', ar: 'يجري سحب أسئلتك…' },
+
+  // --- accessibility ------------------------------------------------
+  skipToContent: { en: 'Skip to content', ar: 'تخطَّ إلى المحتوى' },
+  visualPrevStep: { en: 'Previous step', ar: 'الخطوة السابقة' },
+  visualNextStep: { en: 'Next step', ar: 'الخطوة التالية' },
+  quizCorrect: { en: 'Correct.', ar: 'إجابة صحيحة.' },
+  quizWrong: { en: 'Not quite.', ar: 'ليست صحيحة تمامًا.' },
+
   // --- misc ---------------------------------------------------------
   next: { en: 'Next', ar: 'التالي' },
   previous: { en: 'Previous', ar: 'السابق' },

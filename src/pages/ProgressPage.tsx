@@ -6,6 +6,7 @@ import { LevelBadge } from '@/components/ui/LevelBadge'
 import { Reveal } from '@/components/ui/Reveal'
 import { IconChevron } from '@/components/ui/icons'
 import { useI18n } from '@/i18n/context'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { usePhaseStats, useOverallProgress } from '@/hooks/useCourseProgress'
 import { progressStore } from '@/lib/progress'
 import { TOTAL_MINUTES } from '@/content/phases'
@@ -15,6 +16,8 @@ export function ProgressPage() {
   const { t, L } = useI18n()
   const stats = usePhaseStats()
   const overall = useOverallProgress()
+
+  useDocumentTitle(t('progressTitle'))
   const nextEntry = overall.next
     ? findLesson(overall.next.phaseSlug, overall.next.lessonSlug)
     : undefined

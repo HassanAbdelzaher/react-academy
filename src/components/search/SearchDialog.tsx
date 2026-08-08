@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion } from 'motion/react'
-import { searchContent } from '@/content/search'
+import { deepenSearchIndex, isSearchDeep, searchContent } from '@/content/search'
 import { useI18n } from '@/i18n/context'
 import { useProgress } from '@/lib/progress'
 import { IconCheck, IconClose } from '@/components/ui/icons'
@@ -13,10 +13,27 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
   const progress = useProgress()
   const [query, setQuery] = useState('')
   const [active, setActive] = useState(0)
+  const [deep, setDeep] = useState(isSearchDeep)
   const inputRef = useRef<HTMLInputElement>(null)
   const listRef = useRef<HTMLUListElement>(null)
 
-  const results = useMemo(() => searchContent(query, lang), [query, lang])
+  // Scoring ~110 entries against a short query is far cheaper than memoising it,
+  // and recomputing on every render is what lets `deep` re-rank the results once
+  // the full lesson text lands in the index.
+  const results = searchContent(query, lang)
+
+  // Opening the box is the signal that full-text search is about to be worth its
+  // download, so the lesson chunks are fetched then rather than at page load.
+  useEffect(() => {
+    if (!open || deep) return
+    let alive = true
+    void deepenSearchIndex().then(() => {
+      if (alive) setDeep(true)
+    })
+    return () => {
+      alive = false
+    }
+  }, [open, deep])
 
   useEffect(() => {
     if (!open) return
@@ -43,7 +60,33 @@ export function SearchDialog({ open, onClose }: { open: boolean; onClose: () => 
     listRef.current?.children[active]?.scrollIntoView({ block: 'nearest' })
   }, [active])
 
+  /**
+   * `aria-modal` tells assistive tech the rest of the page is inert, but it does
+   * nothing to the tab order — without this, Tab walks out of the dialog and into
+   * the page behind it while the overlay still covers everything.
+   */
+  function trapTab(e: React.KeyboardEvent) {
+    if (e.key !== 'Tab') return
+    const focusable = e.currentTarget.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])',
+    )
+    if (focusable.length === 0) return
+
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+    const activeEl = document.activeElement
+
+    if (e.shiftKey && activeEl === first) {
+      e.preventDefault()
+      last.focus()
+    } else if (!e.shiftKey && activeEl === last) {
+      e.preventDefault()
+      first.focus()
+    }
+  }
+
   function onKeyDown(e: React.KeyboardEvent) {
+    trapTab(e)
     if (e.key === 'Escape') {
       onClose()
     } else if (e.key === 'ArrowDown') {

@@ -15,6 +15,10 @@ const PlaygroundPage = lazy(() =>
 const VisualsPage = lazy(() =>
   import('@/pages/VisualsPage').then((m) => ({ default: m.VisualsPage })),
 )
+const ExamPage = lazy(() => import('@/pages/ExamPage').then((m) => ({ default: m.ExamPage })))
+const ExamRunPage = lazy(() =>
+  import('@/pages/ExamRunPage').then((m) => ({ default: m.ExamRunPage })),
+)
 
 function Deferred({ children }: { children: ReactNode }) {
   return (
@@ -53,6 +57,22 @@ const router = createBrowserRouter([
         element: (
           <Deferred>
             <VisualsPage />
+          </Deferred>
+        ),
+      },
+      {
+        path: 'exam',
+        element: (
+          <Deferred>
+            <ExamPage />
+          </Deferred>
+        ),
+      },
+      {
+        path: 'exam/:level',
+        element: (
+          <Deferred>
+            <ExamRunPage />
           </Deferred>
         ),
       },

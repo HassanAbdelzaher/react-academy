@@ -4,6 +4,7 @@ import { PhaseCard } from '@/components/phase/PhaseCard'
 import { Reveal } from '@/components/ui/Reveal'
 import { Button } from '@/components/ui/Button'
 import { useI18n } from '@/i18n/context'
+import { useDocumentTitle } from '@/lib/useDocumentTitle'
 import { LEVEL_COLOR, LEVEL_LABEL_KEY, LEVEL_ORDER, type Level } from '@/content/types'
 import { usePhaseStats, useOverallProgress } from '@/hooks/useCourseProgress'
 import { progressStore } from '@/lib/progress'
@@ -16,6 +17,8 @@ export function RoadmapPage() {
   const stats = usePhaseStats()
   const overall = useOverallProgress()
   const [filter, setFilter] = useState<Filter>('all')
+
+  useDocumentTitle(t('roadmapTitle'))
 
   const visible = filter === 'all' ? stats : stats.filter((s) => s.phase.level === filter)
 
