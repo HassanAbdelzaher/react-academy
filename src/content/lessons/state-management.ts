@@ -1,0 +1,476 @@
+import type { LessonBody } from '../blocks'
+
+export const stateManagement: LessonBody[] = [
+  {
+    id: 'state-management/server-vs-client-state',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'Ask one question about every value in your app: **who owns the truth?** If the answer is "a server", you are looking at a cache, and almost every state-management problem you have is really a caching problem.',
+          ar: 'اسأل سؤالًا واحدًا عن كل قيمة في تطبيقك: **من يملك الحقيقة؟** فإن كان الجواب «خادم»، فأنت أمام ذاكرة مؤقّتة، ومعظم مشاكل إدارة الحالة لديك هي في الحقيقة مشاكل تخزين مؤقّت.',
+        },
+      },
+      {
+        type: 'table',
+        head: { en: ['', 'Server state', 'Client state'], ar: ['', 'حالة الخادم', 'حالة العميل'] },
+        rows: [
+          { en: ['Owner', 'the database', 'this browser tab'], ar: ['المالك', 'قاعدة البيانات', 'تبويب المتصفّح هذا'] },
+          { en: ['Can go stale', 'yes, constantly', 'never'], ar: ['هل تتقادم', 'نعم باستمرار', 'أبدًا'] },
+          { en: ['Shared with others', 'yes', 'no'], ar: ['مشتركة مع الآخرين', 'نعم', 'لا'] },
+          { en: ['Examples', 'users, orders, posts', 'is the sidebar open, form draft, theme'], ar: ['أمثلة', 'المستخدمون والطلبات والمنشورات', 'هل الشريط مفتوح، مسودّة النموذج، المظهر'] },
+          { en: ['Tool', 'TanStack Query', '`useState`, or a small store'], ar: ['الأداة', 'TanStack Query', '`useState` أو مخزن صغير'] },
+        ],
+      },
+      {
+        type: 'callout',
+        tone: 'tip',
+        title: { en: 'Why the old advice aged badly', ar: 'لماذا شاخت النصيحة القديمة' },
+        body: {
+          en: 'Teams once put API responses into Redux because there was nowhere else to put them. Once a query cache exists, that entire category leaves the store — and what remains is usually small enough that you may not need a store at all.',
+          ar: 'كانت الفرق تضع استجابات الواجهات في Redux لعدم وجود مكان آخر. وبمجرّد وجود ذاكرة استعلامات تخرج تلك الفئة كلها من المخزن — ويصبح المتبقّي صغيرًا إلى حدّ قد يُغنيك عن المخزن أصلًا.',
+        },
+      },
+      {
+        type: 'steps',
+        steps: [
+          {
+            title: { en: 'Is it from a server?', ar: 'هل مصدرها خادم؟' },
+            body: { en: 'Query cache. Stop here.', ar: 'ذاكرة استعلامات. توقّف هنا.' },
+          },
+          {
+            title: { en: 'Does it belong in the URL?', ar: 'هل مكانها الرابط؟' },
+            body: { en: 'Filters, tabs, pagination, search — put it in search params.', ar: 'التصفيات والتبويبات والترقيم والبحث — ضعها في معاملات الاستعلام.' },
+          },
+          {
+            title: { en: 'Does one screen need it?', ar: 'هل تحتاجها شاشة واحدة؟' },
+            body: { en: '`useState` in that component.', ar: '`useState` داخل ذلك المكوّن.' },
+          },
+          {
+            title: { en: 'Do distant parts of the app need it?', ar: 'هل تحتاجها أجزاء متباعدة؟' },
+            body: { en: 'Now — and only now — reach for a store.', ar: 'الآن فقط — استخدم مخزنًا.' },
+          },
+        ],
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'Where does the list of products in a shop belong?',
+          ar: 'أين مكان قائمة المنتجات في متجر؟',
+        },
+        options: [
+          {
+            text: { en: 'In a query cache — the server owns it and it can change without you.', ar: 'في ذاكرة استعلامات — فالخادم يملكها وقد تتغيّر دون علمك.' },
+            correct: true,
+          },
+          { text: { en: 'In a global store, so every page can read it.', ar: 'في مخزن عام ليقرأه كل صفحة.' } },
+          { text: { en: 'In context at the root of the app.', ar: 'في سياق عند جذر التطبيق.' } },
+          { text: { en: 'In `useState` in the layout component.', ar: 'في `useState` داخل مكوّن التخطيط.' } },
+        ],
+        explain: {
+          en: 'Copying server data into a store means you now own two truths and must keep them in sync by hand — refetching, invalidating and handling the case where another user changed it.',
+          ar: 'نسخ بيانات الخادم إلى مخزن يعني امتلاك حقيقتين عليك مزامنتهما يدويًا — إعادة جلب وإبطال ومعالجة حالة تغييرها من مستخدم آخر.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            'Server state is a cache; client state is genuinely yours.',
+            'Most "global state" turns out to be server state.',
+            'The URL is the right home for filters and navigation state.',
+            'Reach for a store only for client state shared across distant components.',
+          ],
+          ar: [
+            'حالة الخادم ذاكرة مؤقّتة، وحالة العميل ملكك فعلًا.',
+            'معظم «الحالة العامة» تتبيّن أنها حالة خادم.',
+            'الرابط هو المكان الصحيح للتصفيات وحالة التنقّل.',
+            'لا تلجأ للمخزن إلا لحالة عميل مشتركة بين مكوّنات متباعدة.',
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'state-management/zustand',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'Zustand is a store in about three kilobytes: one `create` call, no provider, no actions file, no boilerplate. It has become the default choice for the client state that remains after the query cache takes its share.',
+          ar: 'Zustand مخزن في نحو ثلاثة كيلوبايت: استدعاء `create` واحد، بلا مزوّد ولا ملف إجراءات ولا قوالب. وقد صار الخيار الافتراضي لحالة العميل المتبقّية بعد أن تأخذ ذاكرة الاستعلامات نصيبها.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'ts',
+        filename: 'cartStore.ts',
+        code: `import { create } from 'zustand';
+
+export const useCart = create((set, get) => ({
+  items: [],
+  add: (product) =>
+    set((s) => ({ items: [...s.items, { ...product, qty: 1 }] })),
+  remove: (id) =>
+    set((s) => ({ items: s.items.filter((i) => i.id !== id) })),
+  total: () => get().items.reduce((n, i) => n + i.price * i.qty, 0),
+}));`,
+      },
+      {
+        type: 'code',
+        lang: 'tsx',
+        code: `// ✅ select the smallest slice you need
+const count = useCart((s) => s.items.length);
+const add = useCart((s) => s.add);
+
+// 🚫 this re-renders on every single store change
+const { items, add, remove } = useCart();`,
+      },
+      {
+        type: 'callout',
+        tone: 'warn',
+        title: { en: 'Selectors are the whole performance story', ar: 'الانتقاء هو قصة الأداء كلها' },
+        body: {
+          en: 'A component subscribes to exactly what its selector returns. Select the whole store and every unrelated change re-renders it — which is precisely the problem context has, and the reason to use a store instead.',
+          ar: 'يشترك المكوّن بما تُعيده دالة الانتقاء بالضبط. وانتقاء المخزن كاملًا يجعل كل تغيير غير ذي صلة يعيد عرضه — وهي المشكلة نفسها التي في السياق، وسبب استخدام المخزن بدلًا منه.',
+        },
+      },
+      {
+        type: 'list',
+        items: {
+          en: [
+            'No provider is needed — the store lives in a module, so any component can import it.',
+            'Keep actions **inside** the store next to the state they change.',
+            'The `persist` middleware saves to localStorage in one line.',
+            'Because it is not a hook factory, you can also read and write the store outside React with `useCart.getState()`.',
+          ],
+          ar: [
+            'لا حاجة لمزوّد — فالمخزن يعيش في وحدة، ويمكن لأي مكوّن استيراده.',
+            'أبقِ الإجراءات **داخل** المخزن بجوار الحالة التي تغيّرها.',
+            'وسيط `persist` يحفظ في التخزين المحلي بسطر واحد.',
+            'ولأنه ليس مصنع خطّافات، يمكنك أيضًا القراءة والكتابة خارج رياكت عبر `useCart.getState()`.',
+          ],
+        },
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'A header shows only the cart count, yet it re-renders whenever any item quantity changes. What is the fix?',
+          ar: 'يعرض الترويسة عدد عناصر العربة فقط، لكنها تُعاد عند أي تغيير في الكميات. ما الحل؟',
+        },
+        options: [
+          {
+            text: { en: 'Select just the count: `useCart((s) => s.items.length)`.', ar: 'انتقِ العدد فقط: `useCart((s) => s.items.length)`.' },
+            correct: true,
+          },
+          { text: { en: 'Wrap the header in `React.memo`.', ar: 'غلّف الترويسة بـ `React.memo`.' } },
+          { text: { en: 'Move the cart into context.', ar: 'انقل العربة إلى السياق.' } },
+          { text: { en: 'Split the cart into two stores.', ar: 'قسّم العربة إلى مخزنين.' } },
+        ],
+        explain: {
+          en: 'The component was probably destructuring the whole store. A narrow selector means the header only re-renders when the number itself changes.',
+          ar: 'الأرجح أن المكوّن كان يفكّك المخزن كاملًا. والانتقاء الضيّق يجعل الترويسة تُعاد فقط عند تغيّر الرقم نفسه.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            'One `create` call, no provider, actions beside the state.',
+            'Always subscribe through a narrow selector.',
+            '`persist` gives you localStorage for free.',
+            'The store is reachable outside React too.',
+          ],
+          ar: [
+            'استدعاء `create` واحد بلا مزوّد، والإجراءات بجوار الحالة.',
+            'اشترك دائمًا عبر انتقاء ضيّق.',
+            '`persist` يمنحك التخزين المحلي مجانًا.',
+            'المخزن متاح خارج رياكت أيضًا.',
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'state-management/jotai',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'Jotai turns the model inside out. Instead of one store you slice into, you declare many tiny **atoms** and compose them. A component re-renders only when an atom it actually reads changes.',
+          ar: 'يقلب Jotai النموذج رأسًا على عقب. فبدل مخزن واحد تقتطع منه، تعلن **ذرّات** صغيرة كثيرة وتركّبها. ولا يُعاد عرض المكوّن إلا عند تغيّر ذرّة يقرأها فعلًا.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'ts',
+        code: `import { atom, useAtom, useAtomValue } from 'jotai';
+
+const firstNameAtom = atom('Sara');
+const lastNameAtom = atom('Ali');
+
+// derived — recomputed automatically, never stored twice
+const fullNameAtom = atom((get) => \`\${get(firstNameAtom)} \${get(lastNameAtom)}\`);
+
+function Greeting() {
+  const fullName = useAtomValue(fullNameAtom);   // read only
+  return <h1>{fullName}</h1>;
+}
+
+function Editor() {
+  const [first, setFirst] = useAtom(firstNameAtom);
+  return <input value={first} onChange={(e) => setFirst(e.target.value)} />;
+}`,
+      },
+      {
+        type: 'table',
+        head: { en: ['', 'Zustand', 'Jotai'], ar: ['', 'Zustand', 'Jotai'] },
+        rows: [
+          { en: ['Shape', 'one store, selectors', 'many atoms, composed'], ar: ['الشكل', 'مخزن واحد مع انتقاء', 'ذرّات كثيرة مركّبة'] },
+          { en: ['Derived values', 'computed in a selector', 'a first-class derived atom'], ar: ['القيم المشتقّة', 'تُحسب في الانتقاء', 'ذرّة مشتقّة أصيلة'] },
+          { en: ['Feels like', 'a small Redux', '`useState` that can be shared'], ar: ['يشبه', 'Redux مصغّرة', '`useState` قابلة للمشاركة'] },
+          { en: ['Suits', 'app-wide domains: cart, session', 'many fine-grained, independent values'], ar: ['يناسب', 'مجالات عامة: العربة والجلسة', 'قيمًا كثيرة دقيقة ومستقلّة'] },
+        ],
+      },
+      {
+        type: 'callout',
+        tone: 'note',
+        body: {
+          en: 'Neither is "better". Pick one per project and stay consistent — the cost of mixing two state libraries is far higher than any difference between them.',
+          ar: 'لا أحدهما «أفضل». اختر واحدًا لكل مشروع والتزم به — فتكلفة خلط مكتبتَي حالة أعلى بكثير من أي فرق بينهما.',
+        },
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'What does a derived atom give you that copying the value into another atom does not?',
+          ar: 'ما الذي تمنحه الذرّة المشتقّة ولا يمنحه نسخ القيمة إلى ذرّة أخرى؟',
+        },
+        options: [
+          {
+            text: { en: 'It cannot drift out of sync — it is recomputed from its sources on demand.', ar: 'لا يمكن أن تفقد التزامن — فهي تُحسب من مصادرها عند الطلب.' },
+            correct: true,
+          },
+          { text: { en: 'It renders faster.', ar: 'تُعرض أسرع.' } },
+          { text: { en: 'It persists automatically.', ar: 'تُحفظ تلقائيًا.' } },
+          { text: { en: 'It works outside React.', ar: 'تعمل خارج رياكت.' } },
+        ],
+        explain: {
+          en: 'It is the derived-state rule from phase 3, enforced by the library: there is exactly one source, so there is nothing to keep in sync.',
+          ar: 'إنها قاعدة الحالة المشتقّة من المرحلة الثالثة، تفرضها المكتبة: مصدر واحد بالضبط فلا شيء يحتاج مزامنة.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            'Atoms are shareable pieces of state, composed rather than sliced.',
+            'Derived atoms keep computed values honest.',
+            'Re-renders track the atoms a component actually reads.',
+            'Choose one state library per project.',
+          ],
+          ar: [
+            'الذرّات قطع حالة قابلة للمشاركة، تُركَّب لا تُقتطع.',
+            'الذرّات المشتقّة تُبقي القيم المحسوبة صادقة.',
+            'إعادة العرض تتبع الذرّات التي يقرأها المكوّن فعلًا.',
+            'اختر مكتبة حالة واحدة لكل مشروع.',
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'state-management/context-limits',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'Context is a delivery mechanism, not a state manager. It is unbeatable for values that rarely change and painful for values that change constantly — and knowing which is which prevents most performance complaints.',
+          ar: 'السياق آلية توصيل لا مدير حالة. وهو لا يُبارى في القيم نادرة التغيّر ومؤلم في القيم دائمة التغيّر — ومعرفة الفرق تمنع معظم شكاوى الأداء.',
+        },
+      },
+      {
+        type: 'table',
+        head: { en: ['Good fit', 'Bad fit'], ar: ['مناسب', 'غير مناسب'] },
+        rows: [
+          { en: ['Theme, locale, direction', 'Text being typed into a field'], ar: ['المظهر واللغة والاتجاه', 'نص يُكتب في حقل'] },
+          { en: ['The signed-in user', 'Mouse or scroll position'], ar: ['المستخدم المسجَّل', 'موضع الفأرة أو التمرير'] },
+          { en: ['A configured API client', 'A list updated many times a second'], ar: ['عميل واجهة مُعدّ', 'قائمة تتحدّث مرات كثيرة في الثانية'] },
+          { en: ['Compound-component internals', 'Anything animated per frame'], ar: ['أجزاء المكوّنات المركّبة الداخلية', 'أي شيء متحرك في كل إطار'] },
+        ],
+      },
+      {
+        type: 'text',
+        text: {
+          en: 'When context does start to hurt, there are three sanctioned fixes, in order: split one context into several so consumers subscribe to less, memoise the value so its identity is stable, or move the fast-changing part into a store with selectors.',
+          ar: 'وحين يبدأ السياق بالإيلام، هناك ثلاثة حلول معتمدة بالترتيب: قسّم السياق الواحد إلى عدة سياقات ليشترك المستهلكون بأقلّ، أو خزّن القيمة لتستقرّ هويتها، أو انقل الجزء سريع التغيّر إلى مخزن يدعم الانتقاء.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'tsx',
+        code: `// one context that changes for two different reasons
+<AppContext value={{ user, theme, setTheme }}>
+
+// split: changing the theme no longer re-renders user consumers
+<UserContext value={user}>
+  <ThemeContext value={themeValue}>`,
+      },
+      {
+        type: 'callout',
+        tone: 'note',
+        body: {
+          en: 'Context plus `useReducer` is a perfectly respectable state solution for a small app, and it ships with React. Add a library when you can name the problem it solves for you — not by default.',
+          ar: 'السياق مع `useReducer` حلٌّ محترم تمامًا لتطبيق صغير، وهو يأتي مع رياكت. أضف مكتبة حين تستطيع تسمية المشكلة التي تحلّها لك — لا افتراضيًا.',
+        },
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'Why does `React.memo` fail to protect a component that reads a changed context?',
+          ar: 'لماذا يفشل `React.memo` في حماية مكوّن يقرأ سياقًا تغيّر؟',
+        },
+        options: [
+          {
+            text: {
+              en: 'Context consumers re-render on a value change regardless of their props.',
+              ar: 'لأن مستهلكي السياق يُعاد عرضهم عند تغيّر القيمة بغضّ النظر عن خصائصهم.',
+            },
+            correct: true,
+          },
+          { text: { en: '`React.memo` does not work with hooks.', ar: '`React.memo` لا يعمل مع الخطّافات.' } },
+          { text: { en: 'The provider must also be memoised.', ar: 'يجب تغليف المزوّد أيضًا.' } },
+          { text: { en: 'Only the first consumer is skipped.', ar: 'يُتخطّى المستهلك الأول فقط.' } },
+        ],
+        explain: {
+          en: '`memo` compares props, and context is not a prop. The subscription is direct, which is why splitting the context — reducing what each consumer subscribes to — is the real fix.',
+          ar: '`memo` تقارن الخصائص، والسياق ليس خاصية. فالاشتراك مباشر، ولهذا يكون تقسيم السياق — وتقليل ما يشترك به كل مستهلك — هو الحل الحقيقي.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            'Context injects values; it does not optimise updates.',
+            'Every consumer re-renders when the provider value changes.',
+            'Split contexts by how often they change.',
+            'Context + reducer is enough for many apps.',
+          ],
+          ar: [
+            'السياق يحقن القيم ولا يحسّن التحديثات.',
+            'يُعاد عرض كل مستهلك عند تغيّر قيمة المزوّد.',
+            'قسّم السياقات بحسب وتيرة تغيّرها.',
+            'السياق مع المُختزِل يكفي تطبيقات كثيرة.',
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'state-management/redux-toolkit',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'You probably will not choose Redux for a new project — but you will almost certainly join a team that already has it. Redux Toolkit is the modern, far smaller way to write it.',
+          ar: 'الأرجح ألّا تختار Redux لمشروع جديد — لكنك ستنضم شبه حتمًا إلى فريق يستخدمها بالفعل. و Redux Toolkit هي الطريقة الحديثة الأصغر بكثير لكتابتها.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'ts',
+        code: `import { createSlice, configureStore } from '@reduxjs/toolkit';
+
+const cart = createSlice({
+  name: 'cart',
+  initialState: { items: [] },
+  reducers: {
+    // looks like mutation — Immer makes it immutable underneath
+    added: (state, action) => { state.items.push(action.payload); },
+    removed: (state, action) => {
+      state.items = state.items.filter((i) => i.id !== action.payload);
+    },
+  },
+});
+
+export const { added, removed } = cart.actions;
+export const store = configureStore({ reducer: { cart: cart.reducer } });`,
+      },
+      {
+        type: 'list',
+        items: {
+          en: [
+            'A **slice** bundles the state, the reducers and the generated action creators in one file.',
+            'Immer lets you write `state.items.push(…)` while still producing a new immutable state.',
+            '`useSelector` reads, `useDispatch` writes — the equivalent of a Zustand selector and action.',
+            '**RTK Query** is Redux’s own data-fetching layer, solving the same problem as TanStack Query inside the store.',
+          ],
+          ar: [
+            '**الشريحة** تجمع الحالة والمُختزِلات ومنشئات الإجراءات المولَّدة في ملف واحد.',
+            'يتيح لك Immer كتابة `state.items.push(…)` مع إنتاج حالة جديدة غير قابلة للتعديل.',
+            '`useSelector` للقراءة و `useDispatch` للكتابة — نظير الانتقاء والإجراء في Zustand.',
+            '**RTK Query** طبقة جلب البيانات الخاصة بـ Redux، وتحلّ ما تحلّه TanStack Query لكن داخل المخزن.',
+          ],
+        },
+      },
+      {
+        type: 'callout',
+        tone: 'note',
+        title: { en: 'What Redux still does best', ar: 'ما تتفوّق فيه Redux' },
+        body: {
+          en: 'Large teams with strict conventions, a serialisable action log, time-travel debugging and middleware for cross-cutting concerns. If none of that is a stated requirement, a smaller store will serve you better.',
+          ar: 'الفرق الكبيرة ذات الأعراف الصارمة، وسجلّ إجراءات قابل للتسلسل، وتصحيح بالسفر عبر الزمن، ووسائط للاهتمامات العابرة. وإن لم يكن أيٌّ من ذلك متطلّبًا معلنًا فسيخدمك مخزن أصغر بشكل أفضل.',
+        },
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'How can `state.items.push()` inside an RTK reducer be safe when mutation is forbidden in React?',
+          ar: 'كيف يكون `state.items.push()` داخل مُختزِل RTK آمنًا بينما التعديل المباشر ممنوع في رياكت؟',
+        },
+        options: [
+          {
+            text: {
+              en: 'Immer gives the reducer a draft proxy and produces a brand-new immutable state from the changes.',
+              ar: 'يمنح Immer المُختزِل مسودّة وسيطة ثم ينتج حالة جديدة غير قابلة للتعديل من التغييرات.',
+            },
+            correct: true,
+          },
+          { text: { en: 'Redux disables React’s reference comparison.', ar: 'تعطّل Redux مقارنة المراجع في رياكت.' } },
+          { text: { en: 'Reducers run outside React so mutation is fine.', ar: 'تعمل المُختزِلات خارج رياكت فالتعديل مقبول.' } },
+          { text: { en: 'It is not safe — it is a known bug.', ar: 'ليس آمنًا — إنه خلل معروف.' } },
+        ],
+        explain: {
+          en: 'You mutate a draft, not the real state. Immer records the operations and returns a new object, so React still sees a changed reference.',
+          ar: 'أنت تعدّل مسودّة لا الحالة الحقيقية. ويسجّل Immer العمليات ويُعيد كائنًا جديدًا، فترى رياكت مرجعًا متغيّرًا.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            'RTK is the only way to write Redux today — no hand-written action constants.',
+            'Slices co-locate state, reducers and actions.',
+            'Immer allows mutable-looking code with immutable results.',
+            'Know it for existing codebases; choose smaller tools for new ones.',
+          ],
+          ar: [
+            'RTK هي الطريقة الوحيدة لكتابة Redux اليوم — بلا ثوابت إجراءات مكتوبة يدويًا.',
+            'الشرائح توطّن الحالة والمُختزِلات والإجراءات معًا.',
+            'يتيح Immer كودًا يبدو معدِّلًا بنتائج غير قابلة للتعديل.',
+            'اعرفها للمشاريع القائمة، واختر أدوات أصغر للجديدة.',
+          ],
+        },
+      },
+    ],
+  },
+]

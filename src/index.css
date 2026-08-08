@@ -1,0 +1,335 @@
+@import 'tailwindcss';
+
+/* Class-based dark mode (the <html> element carries `.dark`). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ------------------------------------------------------------------ */
+/*  Design tokens                                                      */
+/* ------------------------------------------------------------------ */
+@theme {
+  --font-sans:
+    'Inter', 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  --font-arabic: 'IBM Plex Sans Arabic', 'Inter', sans-serif;
+
+  /* Brand ramp — React cyan → electric blue */
+  --color-brand-50: #eefaff;
+  --color-brand-100: #d7f2fd;
+  --color-brand-200: #b5e9fb;
+  --color-brand-300: #7fd6e8;
+  --color-brand-400: #58c4dc;
+  --color-brand-500: #2ea9c8;
+  --color-brand-600: #1d87a8;
+  --color-brand-700: #1b6c88;
+  --color-brand-800: #1d5a70;
+  --color-brand-900: #1c4b5f;
+
+  --color-ink-50: #f6f8fb;
+  --color-ink-100: #eceff5;
+  --color-ink-200: #d6dce8;
+  --color-ink-300: #b1bccf;
+  --color-ink-400: #7f8ea9;
+  --color-ink-500: #5d6b87;
+  --color-ink-600: #46536c;
+  --color-ink-700: #364057;
+  --color-ink-800: #232c40;
+  --color-ink-900: #161d2e;
+  --color-ink-950: #0b0f17;
+
+  /* Level accents */
+  --color-level-beginner: #3fca86;
+  --color-level-intermediate: #f0b64a;
+  --color-level-advanced: #a98cff;
+  --color-level-pro: #ff7eb6;
+
+  --radius-xl2: 1.25rem;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --animate-float: float 7s ease-in-out infinite;
+  --animate-drift: drift 22s linear infinite;
+  --animate-shimmer: shimmer 2.6s linear infinite;
+  --animate-pulse-ring: pulse-ring 2.4s ease-out infinite;
+  --animate-orbit: orbit 12s linear infinite;
+
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-12px);
+    }
+  }
+  @keyframes drift {
+    0% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    50% {
+      transform: translate3d(3%, -4%, 0) scale(1.08);
+    }
+    100% {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: -200% 0;
+    }
+    100% {
+      background-position: 200% 0;
+    }
+  }
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(0.9);
+      opacity: 0.7;
+    }
+    70% {
+      transform: scale(1.35);
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+  @keyframes orbit {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+/* Semantic surfaces that flip between light and dark. */
+@theme inline {
+  --color-canvas: var(--surface-canvas);
+  --color-surface: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-line: var(--surface-line);
+  --color-line-strong: var(--surface-line-strong);
+  --color-content: var(--text-1);
+  --color-content-muted: var(--text-2);
+  --color-content-faint: var(--text-3);
+}
+
+:root {
+  --surface-canvas: #f5f8fc;
+  --surface-1: #ffffff;
+  --surface-2: #f1f5fa;
+  --surface-3: #e7edf6;
+  --surface-line: #dbe3ef;
+  --surface-line-strong: #c3cfe2;
+  --text-1: #141c2c;
+  --text-2: #4d5b74;
+  --text-3: #77869e;
+  --glow-a: rgba(88, 196, 220, 0.28);
+  --glow-b: rgba(79, 140, 255, 0.22);
+  --code-bg: #0f1626;
+  color-scheme: light;
+}
+
+.dark {
+  --surface-canvas: #0b0f17;
+  --surface-1: #121a29;
+  --surface-2: #172134;
+  --surface-3: #1e2a41;
+  --surface-line: #22304a;
+  --surface-line-strong: #33456a;
+  --text-1: #e8eef8;
+  --text-2: #9aabc4;
+  --text-3: #6b7c96;
+  --glow-a: rgba(88, 196, 220, 0.22);
+  --glow-b: rgba(79, 140, 255, 0.18);
+  --code-bg: #080c14;
+  color-scheme: dark;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Base                                                               */
+/* ------------------------------------------------------------------ */
+@layer base {
+  * {
+    border-color: var(--surface-line);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background-color: var(--surface-canvas);
+    color: var(--text-1);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  html[lang='ar'] body {
+    font-family: var(--font-arabic);
+    line-height: 1.9;
+  }
+
+  ::selection {
+    background: var(--color-brand-400);
+    color: #06121a;
+  }
+
+  ::-webkit-scrollbar {
+    width: 11px;
+    height: 11px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--surface-line-strong);
+    border-radius: 999px;
+    border: 3px solid var(--surface-canvas);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-brand-500);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-400);
+    outline-offset: 2px;
+    border-radius: 6px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/*  Reusable pieces                                                    */
+/* ------------------------------------------------------------------ */
+@utility glass {
+  background: color-mix(in srgb, var(--surface-1) 72%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+}
+
+@utility text-gradient {
+  background: linear-gradient(
+    100deg,
+    var(--color-brand-400),
+    #4f8cff 45%,
+    var(--color-level-advanced)
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+@utility card-hover {
+  transition:
+    transform 0.35s var(--ease-out-quint),
+    box-shadow 0.35s var(--ease-out-quint),
+    border-color 0.35s var(--ease-out-quint);
+
+  &:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--color-brand-400) 55%, transparent);
+    box-shadow:
+      0 18px 40px -18px var(--glow-b),
+      0 0 0 1px color-mix(in srgb, var(--color-brand-400) 22%, transparent);
+  }
+}
+
+/* Aurora background blobs used behind hero sections. */
+@utility aurora {
+  position: absolute;
+  inset: -30% -10% auto -10%;
+  height: 70vh;
+  pointer-events: none;
+  filter: blur(90px);
+  opacity: 0.75;
+  background:
+    radial-gradient(38% 55% at 20% 30%, var(--glow-a) 0%, transparent 70%),
+    radial-gradient(42% 60% at 78% 22%, var(--glow-b) 0%, transparent 72%),
+    radial-gradient(35% 45% at 55% 65%, rgba(169, 140, 255, 0.18) 0%, transparent 70%);
+}
+
+/* Grid paper texture. */
+@utility grid-fade {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--surface-line) 60%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--surface-line) 60%, transparent) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(70% 60% at 50% 30%, #000 0%, transparent 100%);
+}
+
+@utility shimmer-text {
+  background: linear-gradient(
+    90deg,
+    var(--text-3) 0%,
+    var(--color-brand-300) 40%,
+    var(--text-3) 80%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: var(--animate-shimmer);
+}
+
+/* Sensible defaults for unstyled elements rendered inside a playground preview,
+   so examples can stay focused on React instead of CSS. */
+.playground-preview {
+  direction: ltr;
+  text-align: start;
+}
+.playground-preview button {
+  border: 1px solid var(--surface-line-strong);
+  background: var(--surface-2);
+  color: var(--text-1);
+  border-radius: 8px;
+  padding: 5px 12px;
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.15s;
+}
+.playground-preview button:hover:not(:disabled) {
+  border-color: var(--color-brand-400);
+  color: var(--color-brand-400);
+}
+.playground-preview button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.playground-preview input,
+.playground-preview select,
+.playground-preview textarea {
+  border: 1px solid var(--surface-line-strong);
+  background: var(--surface-2);
+  color: var(--text-1);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 0.86rem;
+}
+.playground-preview small {
+  color: var(--text-3);
+}
+
+/* Logical-direction helper for icons that must flip in RTL. */
+@utility flip-rtl {
+  html[dir='rtl'] & {
+    transform: scaleX(-1);
+  }
+}

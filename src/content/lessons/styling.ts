@@ -1,0 +1,497 @@
+import type { LessonBody } from '../blocks'
+
+export const styling: LessonBody[] = [
+  {
+    id: 'styling/tailwind',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'Tailwind gives you one class per CSS declaration. It looks wrong at first — then you notice you have stopped inventing class names, stopped switching files, and stopped being afraid to delete CSS.',
+          ar: 'يمنحك Tailwind صنفًا لكل تصريح CSS. يبدو الأمر خاطئًا في البداية — ثم تلاحظ أنك توقفت عن اختراع أسماء الأصناف، وعن التنقّل بين الملفات، وعن الخوف من حذف CSS.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'tsx',
+        code: `<button className="rounded-full bg-blue-600 px-5 py-2 font-semibold text-white
+                   transition hover:bg-blue-500 focus-visible:outline-2
+                   disabled:opacity-50 sm:px-6">
+  Save
+</button>`,
+      },
+      {
+        type: 'callout',
+        tone: 'note',
+        title: { en: 'Why it works in components', ar: 'لماذا ينجح داخل المكوّنات' },
+        body: {
+          en: 'The usual objection is repetition — but you never repeat the classes. You write the button once as a component and use `<Button />` everywhere. The verbosity lives in exactly one file, and the styles cannot leak out of it.',
+          ar: 'الاعتراض المعتاد هو التكرار — لكنك لا تكرّر الأصناف. فأنت تكتب الزر مرة كمكوّن وتستخدم `<Button />` في كل مكان. فيبقى الإسهاب في ملف واحد، ولا تتسرّب التنسيقات منه.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'css',
+        filename: 'index.css',
+        code: `@import "tailwindcss";
+
+@theme {
+  --color-brand: #4f8cff;
+  --font-display: "Inter", sans-serif;
+}`,
+        caption: {
+          en: 'Tailwind v4 is configured in CSS with `@theme`. Every token you define becomes a utility — `bg-brand`, `font-display` — automatically.',
+          ar: 'يُضبط Tailwind v4 داخل CSS عبر `@theme`. وكل رمز تعرّفه يصبح أداة تلقائيًا — `bg-brand` و `font-display`.',
+        },
+      },
+      {
+        type: 'list',
+        items: {
+          en: [
+            'Prefixes are conditions: `hover:`, `focus-visible:`, `md:`, `dark:`, `group-hover:`, `disabled:`.',
+            'Use logical properties (`ps-4`, `me-2`, `text-start`) so the layout mirrors correctly in Arabic.',
+            'Arbitrary values exist for the rare exception: `top-[117px]` — but reach for a token first.',
+            'Unused utilities are never generated, so the CSS you ship is only what you actually used.',
+          ],
+          ar: [
+            'البادئات شروط: `hover:` و `focus-visible:` و `md:` و `dark:` و `group-hover:` و `disabled:`.',
+            'استخدم الخصائص المنطقية (`ps-4` و `me-2` و `text-start`) لينعكس التخطيط بشكل صحيح في العربية.',
+            'القيم الحرة موجودة للاستثناء النادر: `top-[117px]` — لكن ابدأ بالرموز المعرَّفة.',
+            'لا تُولَّد الأدوات غير المستخدمة، فلا تُرسل إلا CSS التي استخدمتها فعلًا.',
+          ],
+        },
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'Why does a Tailwind project usually ship less CSS than a hand-written stylesheet?',
+          ar: 'لماذا يُرسل مشروع Tailwind عادةً CSS أقل من صفحة أنماط مكتوبة يدويًا؟',
+        },
+        options: [
+          {
+            text: {
+              en: 'Only the utilities that appear in your source are generated, and repeated utilities are defined once.',
+              ar: 'لأن الأدوات الظاهرة في مصدرك وحدها تُولَّد، والمكرّرة منها تُعرَّف مرة واحدة.',
+            },
+            correct: true,
+          },
+          { text: { en: 'Because it compresses CSS more aggressively.', ar: 'لأنه يضغط CSS بقوة أكبر.' } },
+          { text: { en: 'Because it moves styles into JavaScript.', ar: 'لأنه ينقل التنسيقات إلى جافاسكربت.' } },
+          { text: { en: 'Because it disables inherited styles.', ar: 'لأنه يعطّل التنسيقات الموروثة.' } },
+        ],
+        explain: {
+          en: 'Hand-written CSS grows every time someone is scared to delete a rule. A utility sheet has a natural ceiling: the set of utilities in use, each declared once.',
+          ar: 'تنمو CSS المكتوبة يدويًا كلما خاف أحدهم من حذف قاعدة. أما ورقة الأدوات فلها سقف طبيعي: مجموعة الأدوات المستخدمة، كلٌّ منها معرَّفة مرة واحدة.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            'One class per declaration; conditions come from prefixes.',
+            'Components solve the repetition, not `@apply`.',
+            'v4 is configured in CSS with `@theme`.',
+            'Prefer logical properties so RTL works for free.',
+          ],
+          ar: [
+            'صنف واحد لكل تصريح، والشروط تأتي من البادئات.',
+            'المكوّنات تحلّ التكرار لا `@apply`.',
+            'الإصدار الرابع يُضبط في CSS عبر `@theme`.',
+            'فضّل الخصائص المنطقية ليعمل الاتجاه من اليمين مجانًا.',
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'styling/css-modules',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'If you prefer writing real CSS, CSS Modules give you the one thing plain stylesheets lack: guaranteed scoping. Class names are rewritten at build time, so nothing can collide.',
+          ar: 'إذا كنت تفضّل كتابة CSS حقيقية، فـ CSS Modules تمنحك ما تفتقده صفحات الأنماط العادية: عزلًا مضمونًا. إذ تُعاد كتابة أسماء الأصناف وقت البناء فيستحيل التصادم.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'css',
+        filename: 'Card.module.css',
+        code: `.card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px;
+}
+.title { font-weight: 700; }`,
+      },
+      {
+        type: 'code',
+        lang: 'tsx',
+        filename: 'Card.tsx',
+        code: `import styles from './Card.module.css';
+
+export function Card({ title }: { title: string }) {
+  return (
+    <div className={styles.card}>
+      <h3 className={styles.title}>{title}</h3>
+    </div>
+  );
+}
+// the DOM shows class="Card_card__x7f2q"`,
+      },
+      {
+        type: 'table',
+        head: { en: ['', 'Tailwind', 'CSS Modules'], ar: ['', 'Tailwind', 'CSS Modules'] },
+        rows: [
+          { en: ['Where styles live', 'In the markup', 'In a sibling file'], ar: ['أين تعيش التنسيقات', 'في الوسوم', 'في ملف مجاور'] },
+          { en: ['Naming', 'None needed', 'You still name things'], ar: ['التسمية', 'لا حاجة لها', 'ما زلت تسمّي'] },
+          { en: ['Design tokens', 'Built into the system', 'CSS variables, by hand'], ar: ['رموز التصميم', 'مدمجة في النظام', 'متغيّرات CSS يدويًا'] },
+          { en: ['Complex selectors', 'Awkward', 'Natural'], ar: ['المحدّدات المعقّدة', 'غير مريحة', 'طبيعية'] },
+        ],
+      },
+      {
+        type: 'callout',
+        tone: 'tip',
+        body: {
+          en: 'Mixing both is fine and common: Tailwind for layout and spacing, a module for one component with genuinely complex selectors or keyframe animations. Consistency inside a component matters more than purity across the app.',
+          ar: 'الخلط بينهما مقبول وشائع: Tailwind للتخطيط والمسافات، ووحدة CSS لمكوّن ذي محدّدات معقّدة أو حركات مفاتيح. فالاتساق داخل المكوّن أهم من النقاء عبر التطبيق.',
+        },
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'What problem do CSS Modules solve that a plain imported `.css` file does not?',
+          ar: 'ما المشكلة التي تحلّها CSS Modules ولا يحلّها ملف `.css` عادي مستورد؟',
+        },
+        options: [
+          {
+            text: { en: 'Class names are made unique per file, so two components cannot clash.', ar: 'تُجعل أسماء الأصناف فريدة لكل ملف، فلا يتصادم مكوّنان.' },
+            correct: true,
+          },
+          { text: { en: 'They remove unused CSS automatically.', ar: 'تحذف CSS غير المستخدمة تلقائيًا.' } },
+          { text: { en: 'They make CSS load faster.', ar: 'تجعل CSS تُحمَّل أسرع.' } },
+          { text: { en: 'They add TypeScript types to CSS.', ar: 'تضيف أنواع تايب سكربت إلى CSS.' } },
+        ],
+        explain: {
+          en: 'A plain import is global: a `.title` rule in one file silently restyles every `.title` in the app. Modules make the scope local by rewriting the name.',
+          ar: 'الاستيراد العادي عام: فقاعدة `.title` في ملف تُعيد تنسيق كل `.title` في التطبيق بصمت. أما الوحدات فتجعل النطاق محليًا بإعادة كتابة الاسم.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            'A `.module.css` file scopes every class to the component that imports it.',
+            'You get real CSS with no global collisions.',
+            'Tailwind and modules can coexist in one project.',
+          ],
+          ar: [
+            'ملف `.module.css` يعزل كل صنف للمكوّن الذي يستورده.',
+            'تحصل على CSS حقيقية بلا تصادمات عامة.',
+            'يمكن لـ Tailwind والوحدات التعايش في مشروع واحد.',
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'styling/headless-libraries',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'A dialog is not a `<div>` with a shadow. It needs focus trapping, `Escape` to close, `aria-modal`, a return of focus to the trigger, scroll locking and screen-reader announcements. Headless libraries give you all of that with no styling attached.',
+          ar: 'المربّع الحواري ليس `<div>` بظلّ. فهو يحتاج حصر التركيز، وإغلاقًا بـ `Escape`، و`aria-modal`، وإعادة التركيز للزر، وقفل التمرير، وإعلانات لقارئ الشاشة. والمكتبات بلا تنسيق تمنحك ذلك كله دون أي شكل مفروض.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'tsx',
+        code: `import * as Dialog from '@radix-ui/react-dialog';
+
+<Dialog.Root>
+  <Dialog.Trigger className="btn">Delete</Dialog.Trigger>
+  <Dialog.Portal>
+    <Dialog.Overlay className="fixed inset-0 bg-black/50" />
+    <Dialog.Content className="fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
+                               rounded-2xl bg-white p-6">
+      <Dialog.Title>Delete file?</Dialog.Title>
+      <Dialog.Description>This cannot be undone.</Dialog.Description>
+      <Dialog.Close className="btn">Cancel</Dialog.Close>
+    </Dialog.Content>
+  </Dialog.Portal>
+</Dialog.Root>`,
+      },
+      {
+        type: 'list',
+        items: {
+          en: [
+            '**Radix / Base UI** ship behaviour and accessibility; you own every class name.',
+            '**shadcn/ui** is not a dependency — it copies component source into your repo, built on Radix and Tailwind. You can edit it like your own code.',
+            'Reach for them for dialogs, menus, comboboxes, tooltips, tabs — anything with keyboard semantics you would otherwise get wrong.',
+          ],
+          ar: [
+            '**Radix / Base UI** تقدّمان السلوك وإتاحة الوصول، وأنت تملك كل اسم صنف.',
+            '**shadcn/ui** ليست اعتمادية — بل تنسخ مصدر المكوّن إلى مستودعك، مبنيًّا على Radix و Tailwind. ويمكنك تعديله ككودك تمامًا.',
+            'استخدمها للمربّعات الحوارية والقوائم وحقول الاختيار والتلميحات والتبويبات — كل ما له دلالات لوحة مفاتيح كنت ستخطئ فيها.',
+          ],
+        },
+      },
+      {
+        type: 'callout',
+        tone: 'warn',
+        body: {
+          en: 'The tempting alternative — building your own dropdown with `onClick` and a `useState` — usually ships without arrow-key navigation, without `aria-expanded`, and without closing on outside click. Users who navigate by keyboard simply cannot use it.',
+          ar: 'البديل المغري — بناء قائمتك المنسدلة بـ `onClick` و `useState` — يُنشر عادةً بلا تنقّل بالأسهم ولا `aria-expanded` ولا إغلاق عند النقر خارجها. ومن يتنقّل بلوحة المفاتيح لا يستطيع استخدامها ببساطة.',
+        },
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'What does a headless component library deliberately not provide?',
+          ar: 'ما الذي تتعمّد مكتبة المكوّنات بلا تنسيق عدم تقديمه؟',
+        },
+        options: [
+          {
+            text: { en: 'Visual design — colours, spacing and typography stay yours.', ar: 'التصميم البصري — فالألوان والمسافات والخطوط تبقى لك.' },
+            correct: true,
+          },
+          { text: { en: 'Keyboard interaction.', ar: 'التفاعل بلوحة المفاتيح.' } },
+          { text: { en: 'ARIA attributes.', ar: 'خصائص ARIA.' } },
+          { text: { en: 'Focus management.', ar: 'إدارة التركيز.' } },
+        ],
+        explain: {
+          en: 'That is the whole trade: they take the parts that are hard to get right and easy to get wrong, and leave you the part that makes your product look like yours.',
+          ar: 'وهذه هي المقايضة كلها: تأخذ الأجزاء التي يصعب إتقانها ويسهل إفسادها، وتترك لك ما يجعل منتجك يبدو خاصًّا بك.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            'Headless = behaviour and accessibility, zero styles.',
+            'Radix and Base UI are dependencies; shadcn/ui copies code you own.',
+            'Never hand-roll dialogs, menus or comboboxes in production.',
+          ],
+          ar: [
+            'بلا تنسيق = سلوك وإتاحة وصول بلا أي أنماط.',
+            'Radix و Base UI اعتماديات، أما shadcn/ui فتنسخ كودًا تملكه.',
+            'لا تبنِ المربّعات الحوارية والقوائم يدويًا في الإنتاج أبدًا.',
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'styling/responsive-and-dark-mode',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'Design for the small screen first and the large one becomes an enhancement. Unprefixed utilities apply everywhere; `sm:`, `md:` and `lg:` add to them as the viewport grows.',
+          ar: 'صمّم للشاشة الصغيرة أولًا فتصبح الكبيرة تحسينًا. الأدوات بلا بادئة تنطبق في كل مكان، و`sm:` و `md:` و `lg:` تضيف إليها كلما اتّسعت الشاشة.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'tsx',
+        code: `<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+  {/* one column on a phone, two on a tablet, three on a laptop */}
+</div>
+
+{/* container queries: react to the parent, not the viewport */}
+<div className="@container">
+  <article className="flex flex-col @md:flex-row">…</article>
+</div>`,
+      },
+      {
+        type: 'heading',
+        text: { en: 'Dark mode that survives a reload', ar: 'وضع داكن يصمد بعد إعادة التحميل' },
+      },
+      {
+        type: 'code',
+        lang: 'html',
+        code: `<!-- run before React mounts, or the page flashes white first -->
+<script>
+  const saved = localStorage.getItem('theme');
+  const dark = saved ? saved === 'dark'
+                     : matchMedia('(prefers-color-scheme: dark)').matches;
+  document.documentElement.classList.toggle('dark', dark);
+</script>`,
+      },
+      {
+        type: 'callout',
+        tone: 'tip',
+        title: { en: 'Theme with variables, not with `dark:` everywhere', ar: 'المظهر بالمتغيّرات لا بـ `dark:` في كل مكان' },
+        body: {
+          en: 'Define semantic tokens once — `--surface`, `--content`, `--line` — and flip their values under `.dark`. Then `bg-surface` is correct in both themes, and you never write two class names for one colour.',
+          ar: 'عرّف رموزًا دلالية مرة واحدة — `--surface` و `--content` و `--line` — واقلب قيمها تحت `.dark`. عندها يصبح `bg-surface` صحيحًا في المظهرين، ولا تكتب اسمَي صنف للون واحد.',
+        },
+      },
+      {
+        type: 'list',
+        items: {
+          en: [
+            'Respect `prefers-color-scheme` as the default, but let the user override it.',
+            'Honour `prefers-reduced-motion` — disable long animations for people who ask for it.',
+            'Test at 320 px wide. If it survives that, everything larger is easy.',
+            'For RTL support, use `ps-`/`pe-` and `text-start` rather than `pl-`/`pr-`/`text-left`.',
+          ],
+          ar: [
+            'احترم `prefers-color-scheme` كافتراضي، ودع المستخدم يتجاوزه.',
+            'راعِ `prefers-reduced-motion` — وعطّل الحركات الطويلة لمن يطلب ذلك.',
+            'اختبر عند عرض 320 بكسل. فإن نجح، صار كل ما هو أوسع سهلًا.',
+            'لدعم الاتجاه من اليمين استخدم `ps-`/`pe-` و `text-start` بدل `pl-`/`pr-`/`text-left`.',
+          ],
+        },
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'Your dark-mode site flashes white for a moment on every reload. Why?',
+          ar: 'يومض موقعك الداكن بالأبيض للحظة عند كل إعادة تحميل. لماذا؟',
+        },
+        options: [
+          {
+            text: {
+              en: 'The theme class is applied by React after hydration, so the first paint uses the light default.',
+              ar: 'لأن صنف المظهر يُطبَّق بعد تشغيل رياكت، فيستخدم أول رسم القيمة الفاتحة الافتراضية.',
+            },
+            correct: true,
+          },
+          { text: { en: 'The CSS file loads too slowly.', ar: 'ملف CSS يُحمَّل ببطء.' } },
+          { text: { en: 'Dark mode requires server-side rendering.', ar: 'يتطلّب الوضع الداكن عرضًا من الخادم.' } },
+          { text: { en: 'The browser ignores `prefers-color-scheme` on reload.', ar: 'يتجاهل المتصفّح `prefers-color-scheme` عند إعادة التحميل.' } },
+        ],
+        explain: {
+          en: 'The fix is a tiny blocking script in `index.html` that sets the class before the first paint — which is exactly what this site does.',
+          ar: 'الحل سكربت صغير حاجب في `index.html` يضبط الصنف قبل أول رسم — وهو بالضبط ما يفعله هذا الموقع.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            'Mobile first: unprefixed styles are the base, breakpoints add.',
+            'Container queries scale components, not just pages.',
+            'Set the theme class before first paint to avoid a flash.',
+            'Semantic CSS variables beat sprinkling `dark:` everywhere.',
+          ],
+          ar: [
+            'الهاتف أولًا: الأنماط بلا بادئة هي الأساس، ونقاط التوقف تضيف.',
+            'استعلامات الحاوية تكيّف المكوّنات لا الصفحات فقط.',
+            'اضبط صنف المظهر قبل أول رسم لتجنّب الوميض.',
+            'المتغيّرات الدلالية أفضل من نثر `dark:` في كل مكان.',
+          ],
+        },
+      },
+    ],
+  },
+
+  {
+    id: 'styling/class-merging',
+    blocks: [
+      {
+        type: 'text',
+        lead: true,
+        text: {
+          en: 'Once a component accepts a `className` prop and has variants, string concatenation stops being enough. Two small libraries handle the whole problem.',
+          ar: 'حين يقبل المكوّن خاصية `className` وتكون له متغيّرات، يتوقف دمج النصوص عن الكفاية. ومكتبتان صغيرتان تحلّان المشكلة كلها.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'tsx',
+        code: `import clsx from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+const cn = (...inputs) => twMerge(clsx(inputs));
+
+<div className={cn(
+  'rounded-xl border p-4',
+  isActive && 'border-blue-500 bg-blue-50',
+  isDisabled && 'opacity-50 pointer-events-none',
+  className,                    // caller override wins
+)} />`,
+      },
+      {
+        type: 'table',
+        head: { en: ['Library', 'Its one job'], ar: ['المكتبة', 'وظيفتها الوحيدة'] },
+        rows: [
+          { en: ['`clsx`', 'turn conditions into a class string, skipping falsy values'], ar: ['`clsx`', 'تحويل الشروط إلى نص أصناف مع تجاهل القيم الكاذبة'] },
+          { en: ['`tailwind-merge`', 'when two utilities conflict, keep the last one'], ar: ['`tailwind-merge`', 'عند تعارض أداتين تبقى الأخيرة'] },
+          { en: ['`cva`', 'declare variants and sizes in one typed place'], ar: ['`cva`', 'إعلان المتغيّرات والأحجام في مكان واحد مُنمَّط'] },
+        ],
+      },
+      {
+        type: 'callout',
+        tone: 'warn',
+        title: { en: 'Why plain concatenation fails', ar: 'لماذا يفشل الدمج البسيط' },
+        body: {
+          en: '`"p-4" + " p-2"` puts both classes in the DOM, and CSS picks the one defined later in the stylesheet — not the one you passed last. `twMerge` resolves it by intent, so a caller can always override padding.',
+          ar: '`"p-4" + " p-2"` يضع الصنفين في DOM، وتختار CSS المعرَّف لاحقًا في الورقة لا الذي مرّرته أخيرًا. أما `twMerge` فيحسمها بحسب القصد، فيستطيع المستدعي دائمًا تجاوز الحشو.',
+        },
+      },
+      {
+        type: 'code',
+        lang: 'tsx',
+        code: `import { cva } from 'class-variance-authority';
+
+const button = cva('rounded-full font-semibold transition', {
+  variants: {
+    intent: { primary: 'bg-blue-600 text-white', ghost: 'text-blue-600' },
+    size: { sm: 'h-8 px-3 text-sm', md: 'h-10 px-5' },
+  },
+  defaultVariants: { intent: 'primary', size: 'md' },
+});
+
+<button className={button({ intent: 'ghost', size: 'sm' })} />`,
+      },
+      {
+        type: 'quiz',
+        question: {
+          en: 'A caller passes `className="p-2"` to a component whose base classes include `p-4`. What happens without `tailwind-merge`?',
+          ar: 'يمرّر المستدعي `className="p-2"` إلى مكوّن أصنافه الأساسية تشمل `p-4`. ماذا يحدث بلا `tailwind-merge`؟',
+        },
+        options: [
+          {
+            text: {
+              en: 'Both classes land on the element and CSS order decides — often `p-4` wins and the override silently fails.',
+              ar: 'يظهر الصنفان على العنصر ويحسم ترتيب CSS — وغالبًا يفوز `p-4` فيفشل التجاوز بصمت.',
+            },
+            correct: true,
+          },
+          { text: { en: 'The last class in the string always wins.', ar: 'يفوز آخر صنف في النص دائمًا.' } },
+          { text: { en: 'React throws a duplicate-class warning.', ar: 'ترمي رياكت تحذير تكرار أصناف.' } },
+          { text: { en: 'Tailwind removes the conflicting class at build time.', ar: 'يزيل Tailwind الصنف المتعارض وقت البناء.' } },
+        ],
+        explain: {
+          en: 'HTML class order is irrelevant to CSS specificity. This is the single most common "why is my override not working?" in Tailwind codebases.',
+          ar: 'ترتيب الأصناف في HTML لا علاقة له بأولوية CSS. وهذا هو أشهر سؤال «لماذا لا يعمل تجاوزي؟» في مشاريع Tailwind.',
+        },
+      },
+      {
+        type: 'keypoints',
+        items: {
+          en: [
+            '`clsx` for conditions, `tailwind-merge` for conflicts — combine them into one `cn` helper.',
+            'Always accept and merge a `className` prop in shared components.',
+            '`cva` keeps variants declarative and typed.',
+          ],
+          ar: [
+            '`clsx` للشروط و `tailwind-merge` للتعارضات — ادمجهما في مساعد `cn` واحد.',
+            'اقبل خاصية `className` وادمجها دائمًا في المكوّنات المشتركة.',
+            '`cva` يُبقي المتغيّرات تصريحية ومُنمَّطة.',
+          ],
+        },
+      },
+    ],
+  },
+]
