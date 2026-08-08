@@ -53,7 +53,7 @@ describe('exam banks', () => {
       problems.push(...locProblems(`${q.id}.explain`, q.explain))
 
       if (!levelPhases.has(q.phase))
-        problems.push(`${q.id} names phase "${q.phase}", which is not a ${level} phase`)
+        problems.push(`${q.id} names phase "${q.phase}", which does not belong to the ${level} level`)
 
       if (q.options.length < 2) problems.push(`${q.id} has fewer than 2 options`)
 
@@ -72,19 +72,32 @@ describe('exam banks', () => {
     expect(problems).toEqual([])
   })
 
-  it('has a beginner bank at full target size', () => {
-    expect(beginnerBank.length).toBeGreaterThanOrEqual(TARGET_BANK_SIZE)
+  // A bank is either empty (not written yet) or finished. These rules apply to
+  // whichever banks have been started, so a new level is held to them the moment
+  // its first question is added.
+  const written = BANKS.filter((b) => b.questions.length > 0)
+
+  it('has at least one written bank', () => {
+    expect(written.length).toBeGreaterThan(0)
   })
 
-  it('draws beginner questions from all three beginner phases', () => {
-    const covered = new Set(beginnerBank.map((q) => q.phase))
-    const expected = PHASES.filter((p) => p.level === 'beginner').map((p) => p.slug)
-    expect([...covered].sort()).toEqual(expected.sort())
+  it.each(written)('$level is at full target size', ({ questions }) => {
+    expect(questions.length).toBeGreaterThanOrEqual(TARGET_BANK_SIZE)
   })
 
-  it('keeps every beginner phase above the per-sitting draw, so no phase is token', () => {
+  it.each(written)('$level covers every one of its phases', ({ level, questions }) => {
+    const covered = [...new Set(questions.map((q) => q.phase))].sort()
+    const expected = PHASES.filter((p) => p.level === level)
+      .map((p) => p.slug)
+      .sort()
+    expect(covered).toEqual(expected)
+  })
+
+  it.each(written)('$level keeps every phase above the per-sitting draw', ({ questions }) => {
     const counts = new Map<string, number>()
-    for (const q of beginnerBank) counts.set(q.phase, (counts.get(q.phase) ?? 0) + 1)
+    for (const q of questions) counts.set(q.phase, (counts.get(q.phase) ?? 0) + 1)
+    // A phase with fewer questions than one sitting would be over-represented on
+    // a retake — the same handful would keep coming back.
     const thin = [...counts.entries()].filter(([, n]) => n < QUESTIONS_PER_EXAM)
     expect(thin).toEqual([])
   })

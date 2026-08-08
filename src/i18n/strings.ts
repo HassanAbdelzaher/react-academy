@@ -163,8 +163,8 @@ export const UI = {
   examBankSize: { en: 'questions in the bank', ar: 'سؤالًا في بنك الأسئلة' },
   examNotReady: { en: 'Bank in preparation', ar: 'بنك الأسئلة قيد الإعداد' },
   examNotReadyBody: {
-    en: 'This level\'s questions are still being written. The beginner exam is ready now.',
-    ar: 'ما زالت أسئلة هذا المستوى قيد الكتابة. اختبار المبتدئين جاهز الآن.',
+    en: 'This level\'s questions are still being written. The other exams are ready now.',
+    ar: 'ما زالت أسئلة هذا المستوى قيد الكتابة. أما الاختبارات الأخرى فجاهزة الآن.',
   },
   examCovers: { en: 'Covers', ar: 'يغطّي' },
   examLoading: { en: 'Drawing your questions…', ar: 'يجري سحب أسئلتك…' },

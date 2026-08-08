@@ -149,7 +149,8 @@ cannot:
   hardcoded `aria-label` or `placeholder`, which by definition cannot translate.
 - **Exam banks** ([`bank.test.ts`](src/content/exam/bank.test.ts)) — unique ids, no repeated
   question, one correct answer each, no two identical options, and every question tagged with a
-  phase that actually belongs to its level.
+  phase that actually belongs to its level. Any bank with questions in it must also be at full
+  size and cover every phase of its level, so a half-written bank fails rather than shipping.
 - **Exam engine** ([`exam.test.ts`](src/lib/exam.test.ts)) — a paper never repeats a question,
   the correct answer does not stay in one position, an unanswered question counts as wrong, and
   the pass mark passes *at* the threshold rather than just above it.
